@@ -19,8 +19,5 @@ jobs:
         with:
           python-version: "3.14"
 
-      - name: Install pre-commit
-        run: pip install pre-commit
-
       - name: Run pre-commit
-        run: pre-commit run --all-files
+        uses: pre-commit/action@v3.0.1
