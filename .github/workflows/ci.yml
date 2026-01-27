@@ -22,7 +22,7 @@ jobs:
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
 
-  security:
+  Trivy:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,12 +33,5 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           format: 'table'
-          exit-code: '0'
+          exit-code: '1'
           scan-type: 'fs'
-
-      - name: Upload Vulnerability Scan Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: trivy-report
-          path: trivy-report.json
-          retention-days: 30
