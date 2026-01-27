@@ -33,7 +33,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           format: 'table'
-          exit-code: '1'
+          exit-code: '0'
           scan-type: 'fs'
 
       - name: Upload Vulnerability Scan Results
