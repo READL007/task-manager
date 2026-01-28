@@ -77,7 +77,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run Checkov
+      - name: Run Checkov on backend
         uses: bridgecrewio/checkov-action@master
         with:
           directory: './backend'
+
+      - name: Run Checkov on frontend
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: './frontend'
