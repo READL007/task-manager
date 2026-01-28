@@ -5,14 +5,14 @@ on:
     branches:
       - develop
       - main
-    paths:
-      - "backend/**"
+    # paths:
+    #   - "backend/**"
   pull_request:
     branches:
       - develop
       - main
-    paths:
-      - "backend/**"
+    # paths:
+    #   - "backend/**"
 
 jobs:
   lint:
@@ -27,3 +27,10 @@ jobs:
 
       - name: Build backend docker image
         run: docker build -t task-manager-backend ./backend
+
+      - name: Snyk scan
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: task-manager-backend
