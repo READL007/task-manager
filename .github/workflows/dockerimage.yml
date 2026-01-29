@@ -1,0 +1,37 @@
+name: Build and push Docker image to dockerhub
+
+on:
+  workflow_call:
+    
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v4
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push backend to dockerhub
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend 
+        file: ./backend/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/task-manager-back:latest
+
+    - name: Build and push frontend to dockerhub
+      uses: docker/build-push-action@v5
+      with:
+        context: ./frontend 
+        file: ./frontend/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/task-manager-front:latest
+

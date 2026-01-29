@@ -1,0 +1,39 @@
+name: Backend
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+    paths:
+      - "backend/**"
+  pull_request:
+    branches:
+      - develop
+      - main
+    paths:
+      - "backend/**"
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build backend docker image
+        run: docker build -t task-manager-backend ./backend
+
+      - name: Snyk scan
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: task-manager-backend
+
+  docker:
+      uses: ./.github/workflows/dockerimage.yml

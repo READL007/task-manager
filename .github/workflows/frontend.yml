@@ -1,0 +1,40 @@
+name: Frontend
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+    paths:
+      - "frontend/**"
+  pull_request:
+    branches:
+      - develop
+      - main
+    paths:
+      - "frontend/**"
+
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build frontend docker image
+        run: docker build -t task-manager-frontend ./frontend
+
+      - name: Snyk scan
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: task-manager-frontend
+
+  docker:
+      uses: ./.github/workflows/dockerimage.yml
