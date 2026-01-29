@@ -4,6 +4,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Deploy docs
@@ -15,5 +18,5 @@ jobs:
       - name: Deploy docs on Github Pages
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
           CONFIG_FILE: backend/mkdocs/mkdocs.yml
