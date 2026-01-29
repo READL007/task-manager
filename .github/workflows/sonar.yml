@@ -1,4 +1,4 @@
-name: Build
+name: Sonar scanner
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build and analyze
+    name: Build Sonar and analyze
     runs-on: ubuntu-latest
 
     steps:

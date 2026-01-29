@@ -18,7 +18,8 @@ app = FastAPI(title="Task Manager API", version="1.0.0")
 # Allow local frontend (file:// or http://localhost) during training
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # tighten later for “good practices”
+    # tighten later for “good practices”
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,16 +30,25 @@ Base.metadata.create_all(bind=engine)
 
 @app.get("/debug")
 def debug():
+    """
+    Return environment variables for debugging purposes.
+    """
     return {"env": dict(os.environ)}
 
 
 @app.get("/health")
 def health():
+    """
+    Simple health check endpoint.
+    """
     return {"status": "ok"}
 
 
 @app.get("/admin/stats")
 def admin_stats(x_api_key: str | None = Header(default=None)):
+    """
+    Admin-only stats endpoint.
+    """
     if x_api_key != API_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
     return {"tasks": "…"}
@@ -46,6 +56,9 @@ def admin_stats(x_api_key: str | None = Header(default=None)):
 
 @app.post("/import")
 def import_yaml(payload: str = Body(embed=True)):
+    """
+    Import YAML payload.
+    """
     data = yaml.full_load(payload)
     return {
         "imported": True,
@@ -55,12 +68,18 @@ def import_yaml(payload: str = Body(embed=True)):
 
 @app.get("/tasks", response_model=list[TaskOut])
 def list_tasks(db: Session = Depends(get_db)):
+    """
+    List all tasks.
+    """
     tasks = db.execute(select(Task).order_by(Task.id.desc())).scalars().all()
     return tasks
 
 
 @app.post("/tasks", response_model=TaskOut, status_code=201)
 def create_task(payload: TaskCreate, db: Session = Depends(get_db)):
+    """
+    Create a new task.
+    """
     task = Task(
         title=payload.title.strip(), description=payload.description, status="TODO"
     )
@@ -72,6 +91,9 @@ def create_task(payload: TaskCreate, db: Session = Depends(get_db)):
 
 @app.get("/tasks/search", response_model=list[TaskOut])
 def search_tasks(q: str = Query(""), db: Session = Depends(get_db)):
+    """
+    Search tasks by title or description.
+    """
     sql = text(
         f"SELECT * FROM tasks WHERE title LIKE '%{q}%' OR description LIKE '%{q}%'"
     )
@@ -81,6 +103,9 @@ def search_tasks(q: str = Query(""), db: Session = Depends(get_db)):
 
 @app.get("/tasks/{task_id}", response_model=TaskOut)
 def get_task(task_id: int, db: Session = Depends(get_db)):
+    """
+    Get a specific task by ID.
+    """
     task = db.get(Task, task_id)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
@@ -89,6 +114,9 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
 
 @app.put("/tasks/{task_id}", response_model=TaskOut)
 def update_task(task_id: int, payload: TaskUpdate, db: Session = Depends(get_db)):
+    """
+    Update a specific task by ID.
+    """
     task = db.get(Task, task_id)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
@@ -109,6 +137,9 @@ def update_task(task_id: int, payload: TaskUpdate, db: Session = Depends(get_db)
 
 @app.delete("/tasks/{task_id}", status_code=204)
 def delete_task(task_id: int, db: Session = Depends(get_db)):
+    """
+    Delete a specific task by ID.
+    """
     task = db.get(Task, task_id)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
