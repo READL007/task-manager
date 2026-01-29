@@ -5,14 +5,14 @@ on:
     branches:
       - develop
       - main
-    # paths:
-    #   - "frontend/**"
+    paths:
+      - "frontend/**"
   pull_request:
     branches:
       - develop
       - main
-    # paths:
-    #   - "frontend/**"
+    paths:
+      - "frontend/**"
 
 
 jobs:
@@ -35,3 +35,6 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: task-manager-frontend
+
+    docker:
+      uses: ./.github/workflows/dockerimage.yml
