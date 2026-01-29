@@ -1,0 +1,32 @@
+site_name: Task Manager API
+site_description: Documentation for the FastAPI backend of the Task Manager project
+site_author: Eleonore
+repo_url: https://github.com/READL007/task-manager
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+    - content.tabs.link
+    - toc.integrate
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - API Reference:
+      - Overview: api/index.md
+      - Health: api/health.md
+      - Admin: api/admin.md
+      - Import: api/import.md
+      - Tasks:
+          - List Tasks: api/tasks/list.md
+          - Create Task: api/tasks/create.md
+          - Search Tasks: api/tasks/search.md
+          - Get Task: api/tasks/get.md
+          - Update Task: api/tasks/update.md
+          - Delete Task: api/tasks/delete.md
+  - Models: models.md
+  - Database: database.md
+  - Security: security.md
+  - Deployment: deployment.md
