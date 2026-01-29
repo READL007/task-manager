@@ -1,0 +1,16 @@
+services:
+  backend:
+    image: rocketspritz/task-manager-back:latest
+    container_name: task-manager-back
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/taskmanager.db:/app/taskmanager.db
+
+  frontend:
+    image: rocketspritz/task-manager-front:latest
+    container_name: task-manager-front
+    ports:
+      - "5173:8080"
+    depends_on:
+      - backend
