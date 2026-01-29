@@ -4,4 +4,4 @@ This documentation describes the backend of the Task Manager project, built with
 
 The API exposes CRUD operations for tasks, YAML import, admin endpoints, and health/debug utilities.
 
-Version: **1.0.0**
+Version: **1.0.1**
