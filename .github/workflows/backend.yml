@@ -35,5 +35,5 @@ jobs:
         with:
           image: task-manager-backend
     
-    docker:
+  docker:
       uses: ./.github/workflows/dockerimage.yml
